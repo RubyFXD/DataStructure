@@ -1,6 +1,7 @@
 /**
  * 单链表节点增删改查测试
  * 单链表相关面试题
+ * 实现过程都考虑有头节点
  */
 public class SingleLinkedListDemo {
 
@@ -45,6 +46,11 @@ public class SingleLinkedListDemo {
         System.out.println("测试-面试题1：求单链表中节点的个数，即单链表的长度");
         System.out.println("单链表的长度为："+getSingleLinkedListLength(singleLinkedList.head));
 
+        //测试-面试题2：求单链表倒数第k个节点，有返回该节点，无返回null
+        System.out.println("测试-面试题2：求单链表倒数第k个节点，有返回该节点，无返回null");
+        System.out.println("resultNode1= "+getLastKNode1(1,singleLinkedList));
+        System.out.println("resultNode2= "+getLastKNode2(1,singleLinkedList));
+
     }
 
     //面试题1：求单链表中节点的个数，即单链表的长度
@@ -59,6 +65,43 @@ public class SingleLinkedListDemo {
             temp=temp.next;
         }
         return length;
+    }
+
+    //面试题2：查找单链表中的倒数第K个节点，找到返回该节点，没找到返回null
+    //第一种方法，先统计singleLinkedList的长度，然后从头节点开始遍历，移动length-K次，就是第倒数第K个节点
+    public static HeroNode getLastKNode1(int k, SingleLinkedList singleLinkedList){
+        if(singleLinkedList.head.next==null){
+            return null;
+        }
+        int length=getSingleLinkedListLength(singleLinkedList.head);
+        if(k<=0 || k>length){
+            return null;
+        }
+        HeroNode temp=singleLinkedList.head.next;
+        for(int i=0;i<length-k;i++){
+            temp=temp.next;
+        }
+        return temp;
+    }
+    //第二种方法，用两个指针，第一个指针先移动k次，然后两个指针一起移动，当第一个指针到null的时候，return第二个指针指的node
+    public static HeroNode getLastKNode2(int k, SingleLinkedList singleLinkedList){
+        if(singleLinkedList.head.next==null || k<=0){
+            return null;
+        }
+        HeroNode firstNode=singleLinkedList.head.next;
+        HeroNode secondNode=singleLinkedList.head.next;
+        for(int i=0;i<k;i++){
+            if(firstNode!=null){
+                firstNode=firstNode.next;
+            }else{
+                return null;
+            }
+        }
+        while(firstNode!=null){
+            firstNode=firstNode.next;
+            secondNode=secondNode.next;
+        }
+        return secondNode;
     }
 
 
