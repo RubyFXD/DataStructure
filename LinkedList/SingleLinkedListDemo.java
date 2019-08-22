@@ -1,3 +1,5 @@
+import org.w3c.dom.html.HTMLTableRowElement;
+
 import java.util.Stack;
 
 /**
@@ -64,6 +66,30 @@ public class SingleLinkedListDemo {
         //测试-面试题4：单链表的逆序输出（栈实现）
         System.out.println("测试-面试题4：单链表的逆序输出（栈实现）");
         reversePrint(singleLinkedList);
+
+        //测试-面试题5：合并两个有序单链表
+        System.out.println("测试-面试题5：合并两个有序单链表");
+        SingleLinkedList singleLinkedList1=new SingleLinkedList();
+        SingleLinkedList singleLinkedList2=new SingleLinkedList();
+        HeroNode hero5= new HeroNode(5,"宋江","及时雨");
+        HeroNode hero6=new HeroNode(6,"卢俊义","玉麒麟");
+        HeroNode hero7=new HeroNode(7,"吴用","智多星");
+        HeroNode hero8=new HeroNode(8,"林冲","豹子头");
+
+        singleLinkedList1.add(hero5);
+        singleLinkedList1.add(hero7);
+        singleLinkedList2.add(hero6);
+        singleLinkedList2.add(hero8);
+
+        //重复使用初始化过其它链表的节点，来初始化另一个节点一样，链接顺序不一样的链表会出问题，因为节点之间的关系之前已经确定了
+        //再次初始化的时候如果改变，则会影响之间初始化过的其它链表，有冲突，测试的时候会造成程序不终止。
+//        singleLinkedList1.add(hero1);
+//        singleLinkedList1.add(hero3);
+//        singleLinkedList2.add(hero2);
+//        singleLinkedList2.add(hero4);
+
+        HeroNode mergedHead=mergetSortedLinkedList(singleLinkedList1,singleLinkedList2);
+        singleLinkedList.show(mergedHead);
 
     }
 
@@ -152,6 +178,50 @@ public class SingleLinkedListDemo {
         while (stack.size()>0){
             System.out.println(stack.pop().toString());
         }
+    }
+
+    //面试题5：合并两个有序的链表
+    public static HeroNode mergetSortedLinkedList(SingleLinkedList singleLinkedList1, SingleLinkedList singleLinkedList2){
+        if(singleLinkedList1.head.next==null && singleLinkedList2.head.next==null){
+            System.out.println("链表为空，不能合并");
+            return null;
+        }
+        if(singleLinkedList1.head.next==null){
+            return singleLinkedList2.head;
+        }
+        if(singleLinkedList2.head.next==null){
+            return singleLinkedList1.head;
+        }
+
+        HeroNode current1=singleLinkedList1.head.next;
+        HeroNode current2=singleLinkedList2.head.next;
+        HeroNode newHead=new HeroNode(0,"","");
+        HeroNode newCurrent=newHead;
+
+        while(current1!=null && current2!=null){
+            if(current1.no<current2.no){
+                newCurrent.next=current1;
+                newCurrent=current1;
+                current1=current1.next;
+            }else{
+                newCurrent.next=current2;
+                newCurrent=current2;
+                current2=current2.next;
+            }
+        }
+
+        while(current1!=null){
+            newCurrent.next=current1;
+            newCurrent=current1;
+            current1=current1.next;
+        }
+        while(current2!=null){
+            newCurrent.next=current2;
+            newCurrent=current2;
+            current2=current2.next;
+        }
+
+        return newHead;
     }
 
 }
