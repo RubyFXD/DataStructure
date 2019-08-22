@@ -1,9 +1,12 @@
+import java.util.Stack;
+
 /**
  * 单链表节点增删改查测试
  * 单链表相关面试题
  * 实现过程都考虑有头节点
  *
  * 链表操作过程中注意使用辅助变量(e.g. 链表反转current, next)，还有辅助变量next之间的指向关系，但链表马虎很容易断掉链接
+ * newNode=oldNode 因为newNode和oldNode指向相同的内存空间，所以改变newNode的属性e.g. newNode.next, oldNode.next也会跟着变，所以注意别断链
  */
 public class SingleLinkedListDemo {
 
@@ -57,6 +60,10 @@ public class SingleLinkedListDemo {
         System.out.println("测试-面试题3：单链表的反转");
         reverse(singleLinkedList);
         singleLinkedList.show(singleLinkedList.head);
+
+        //测试-面试题4：单链表的逆序输出（栈实现）
+        System.out.println("测试-面试题4：单链表的逆序输出（栈实现）");
+        reversePrint(singleLinkedList);
 
     }
 
@@ -128,6 +135,24 @@ public class SingleLinkedListDemo {
 
     }
 
+    //面试题4：从尾到头打印单链表节点
+    //可以使用 单链表反转的方法，但是会破坏原始链表的结构
+    //可以使用 栈数据结构，后进先出的特点，逆序打印链表节点
+    public static void reversePrint(SingleLinkedList singleLinkedList){
+        if(singleLinkedList.head.next==null){
+            return;
+        }
+        Stack<HeroNode> stack=new Stack<>();
+        HeroNode current=singleLinkedList.head.next;
+        while(current!=null){
+            stack.add(current);
+            current=current.next;
+        }
+
+        while (stack.size()>0){
+            System.out.println(stack.pop().toString());
+        }
+    }
 
 }
 
