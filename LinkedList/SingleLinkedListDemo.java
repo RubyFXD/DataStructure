@@ -2,6 +2,8 @@
  * 单链表节点增删改查测试
  * 单链表相关面试题
  * 实现过程都考虑有头节点
+ *
+ * 链表操作过程中注意使用辅助变量(e.g. 链表反转current, next)，还有辅助变量next之间的指向关系，但链表马虎很容易断掉链接
  */
 public class SingleLinkedListDemo {
 
@@ -50,6 +52,11 @@ public class SingleLinkedListDemo {
         System.out.println("测试-面试题2：求单链表倒数第k个节点，有返回该节点，无返回null");
         System.out.println("resultNode1= "+getLastKNode1(1,singleLinkedList));
         System.out.println("resultNode2= "+getLastKNode2(1,singleLinkedList));
+
+        //测试-面试题3：单链表的反转
+        System.out.println("测试-面试题3：单链表的反转");
+        reverse(singleLinkedList);
+        singleLinkedList.show(singleLinkedList.head);
 
     }
 
@@ -102,6 +109,23 @@ public class SingleLinkedListDemo {
             secondNode=secondNode.next;
         }
         return secondNode;
+    }
+
+    //面试题3：单链表的反转
+    public static void reverse(SingleLinkedList singleLinkedList){
+        if(singleLinkedList.head.next==null || singleLinkedList.head.next.next==null){
+            return;
+        }
+        HeroNode reverseHead=new HeroNode(0,"","");
+        HeroNode current=singleLinkedList.head.next;
+        while(current!=null){
+            HeroNode next=current.next;
+            current.next=reverseHead.next;
+            reverseHead.next=current;
+            current=next;
+        }
+        singleLinkedList.head.next=reverseHead.next;
+
     }
 
 
